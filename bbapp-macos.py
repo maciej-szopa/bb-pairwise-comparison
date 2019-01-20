@@ -1,47 +1,49 @@
 import bbdata
 import bbprocess
-import bboutput
 import copy
+import bboutput
 from tkinter import *
 from random import shuffle
 
 pms_range, vtl_range, df_range, prf_range = [-10.0, 10.0], [0.6, 1.4], [0.6, 1.4], [0.1, 10]
 ranges = [pms_range, vtl_range, df_range, prf_range]
+current_path = sys.argv[1]
 
 
 class WelcomeWindow:
     def __init__(self, master):
-        self.agreed = IntVar()
-        understand_str = '\nConsent'
-        psa_str = '\nExperiment code and personnel'
-        welcome_str = '=============================  Your task  =============================\n\n' \
-                      'In each trial, you will be played two recordings of the sentence \'I owe you a yoyo\'.\n' \
-                      'You will be also given a description of an emotion.\n' \
-                      'Imagine that sentence pronounced with this emotion.\n' \
-                      'Out of the two sounds played, choose the sound \n' \
-                      'that is closer to the emotional prototype that you imagined.\n\n'\
-                      'Estimated duration: 30 minutes. You have to complete the experiment in one sitting.\n' \
-                      'Roughly in the middle there will be quick break.\n' \
-                      'You will start with a quick test run to adjust your playback volume.\n\n' \
-                      '==================================================================\n\n' \
-                      'Please enter your details below, tick the box and click the button to start the test run.\n'
+        def __init__(self, master):
+            self.agreed = IntVar()
+            understand_str = '\nConsent'
+            psa_str = '\nExperiment code and personnel'
+            welcome_str = '=============================  Your task  =============================\n\n' \
+                          'In each trial, you will be played two recordings of the sentence \'I owe you a yoyo\'.\n' \
+                          'You will be also given a description of an emotion.\n' \
+                          'Imagine that sentence pronounced with this emotion.\n' \
+                          'Out of the two sounds played, choose the sound \n' \
+                          'that is closer to the emotional prototype that you imagined.\n\n' \
+                          'Estimated duration: 30 minutes. You have to complete the experiment in one sitting.\n' \
+                          'Roughly in the middle there will be quick break.\n' \
+                          'You will start with a quick test run to adjust your playback volume.\n\n' \
+                          '==================================================================\n\n' \
+                          'Please enter your details below, tick the box and click the button to start the test run.\n'
 
-        self.psa_label = Label(master, text=psa_str, fg='red')
-        self.psa_label.pack()
-        self.welcome_label = Label(master, text=welcome_str)
-        self.welcome_label.pack()
-        self.name_label = Label(master, text='Name (no special characters):')
-        self.name_label.pack()
-        self.input_name = Entry(master)
-        self.input_name.pack()
-        self.details_label = Label(master, text='Email:')
-        self.details_label.pack()
-        self.input_details = Entry(master)
-        self.input_details.pack()
-        self.agree_checkbutton = Checkbutton(master, text=understand_str, font=('default', 7), variable=self.agreed)
-        self.agree_checkbutton.pack()
-        self.go = Button(master, text='Start experiment', fg='green', command=lambda: self.open_window(master))
-        self.go.pack()
+            self.psa_label = Label(master, text=psa_str, fg='red')
+            self.psa_label.pack()
+            self.welcome_label = Label(master, text=welcome_str)
+            self.welcome_label.pack()
+            self.name_label = Label(master, text='Name (no special characters):')
+            self.name_label.pack()
+            self.input_name = Entry(master)
+            self.input_name.pack()
+            self.details_label = Label(master, text='Email:')
+            self.details_label.pack()
+            self.input_details = Entry(master)
+            self.input_details.pack()
+            self.agree_checkbutton = Checkbutton(master, text=understand_str, font=('default', 7), variable=self.agreed)
+            self.agree_checkbutton.pack()
+            self.go = Button(master, text='Start experiment', fg='green', command=lambda: self.open_window(master))
+            self.go.pack()
 
     def open_window(self, master):
         if self.input_name.get() != '' and self.input_details.get() != '' and self.agreed.get() == 1:
@@ -108,7 +110,7 @@ class App:
         playing.set('PLAYING')
         # print(playing.get())
         self.window.update()
-        bboutput.praat_play(self.current_filename, split[0], split[1], split[2], split[3])
+        bboutput.praat_play(current_path, self.current_filename, split[0], split[1], split[2], split[3])
         self.window.update()
         playing.set('')
 
@@ -346,7 +348,7 @@ class App:
 def close_app(app):
     app.log = app.winners + ['\n\n'] + app.log
     app.log.append('\n--------Session terminated by user--------')
-    bboutput.log('results_bb', app.p1.name, app.log)
+    output.log(current_path, 'results_bb', app.p1.name, app.log)
     root.destroy()
 
 
@@ -354,7 +356,6 @@ def submit_and_close(app):
     app.log.append('Feedback:')
     app.log.append(app.feedback.get('1.0', END))
     close_app(app)
-
 
 root = Tk()
 root.title('Prototype approximation')
