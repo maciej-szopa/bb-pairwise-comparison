@@ -7,6 +7,8 @@ class Participant:
         self.grief_stricken = Emotion('Grief-stricken', self.neutral)
         self.scared = Emotion('Scared', self.neutral)
         self.angry = Emotion('Angry', self.neutral)
+        self.cold_anger = Emotion('Cold anger', self.neutral)
+        self.disgusted = Emotion('Disgusted', self.neutral)
 
 
 class Emotion:

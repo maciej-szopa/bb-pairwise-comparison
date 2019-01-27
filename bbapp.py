@@ -143,10 +143,13 @@ class App:
         self.emotion_trial(participant.happy)
         self.emotion_trial(participant.depressed)
         self.emotion_trial(participant.grief_stricken)
-        self.take_a_break()
         self.emotion_trial(participant.scared)
+        self.take_a_break()
         self.emotion_trial(participant.angry)
-        self.voice_trial(participant)
+        self.emotion_trial(participant.cold_anger)
+        self.emotion_trial(participant.disgusted)
+        # uncomment below if you want to run a simple voice quality choice test for all emotions
+        # self.voice_trial(participant)
         self.conclude()
 
     def test_trial(self):
